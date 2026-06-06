@@ -17,20 +17,17 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   html, body {
-    background: var(--surface);
-    font-family: 'Inter', sans-serif;
     width: 100%;
     height: 100%;
-    min-height: 100vh;
+    background: var(--surface);
+    font-family: 'Inter', sans-serif;
   }
 
   .clock-card {
+    position: fixed;
+    inset: 0;
     background: var(--surface);
     padding: 18px 22px 16px;
-    width: 100%;
-    height: 100%;
-    min-height: 100vh;
-    position: relative;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -138,25 +135,18 @@
   function updateClock() {
     const now = new Date();
     const pst = new Date(now.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }));
-
     let h = pst.getHours();
     const m = pst.getMinutes();
     const ampm = h >= 12 ? 'PM' : 'AM';
     h = h % 12 || 12;
-
     document.getElementById('hours').textContent = String(h).padStart(2, '0');
     document.getElementById('minutes').textContent = String(m).padStart(2, '0');
     document.getElementById('ampm').textContent = ampm;
-
     const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
     const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    const dateStr = `${days[pst.getDay()]}, ${months[pst.getMonth()]} ${pst.getDate()}, ${pst.getFullYear()}`;
-    document.getElementById('date').textContent = dateStr;
-
-    const offsetStr = now.toLocaleString('en-US', {timeZone:'America/Los_Angeles', timeZoneName:'short'}).split(' ').pop();
-    document.getElementById('tz-label').textContent = offsetStr;
+    document.getElementById('date').textContent = `${days[pst.getDay()]}, ${months[pst.getMonth()]} ${pst.getDate()}, ${pst.getFullYear()}`;
+    document.getElementById('tz-label').textContent = now.toLocaleString('en-US', {timeZone:'America/Los_Angeles', timeZoneName:'short'}).split(' ').pop();
   }
-
   updateClock();
   setInterval(updateClock, 1000);
 </script>
