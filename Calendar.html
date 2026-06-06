@@ -24,16 +24,16 @@
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    padding: 24px;
+    padding: 12px;
   }
 
   .date-card {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 28px 30px 24px;
+    border-radius: 12px;
+    padding: 14px 15px 12px;
     width: 100%;
-    max-width: 560px;
+    max-width: 280px;
     position: relative;
     overflow: hidden;
   }
@@ -42,37 +42,36 @@
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
-    height: 3px;
+    height: 2px;
     background: var(--accent);
-    border-radius: 20px 20px 0 0;
+    border-radius: 12px 12px 0 0;
   }
 
   .label {
-    font-size: 11px;
+    font-size: 6px;
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--text);
-    margin-bottom: 12px;
+    margin-bottom: 6px;
     font-weight: 600;
   }
 
   .content-row {
     display: flex;
-    gap: 28px;
+    gap: 14px;
     align-items: flex-start;
   }
 
-  /* Left side */
   .left {
     flex: 0 0 auto;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-width: 140px;
+    min-width: 70px;
   }
 
   .day-number {
-    font-size: 80px;
+    font-size: 40px;
     font-weight: 700;
     letter-spacing: -0.02em;
     color: var(--text);
@@ -84,32 +83,31 @@
   }
 
   .left-meta {
-    margin-top: 16px;
+    margin-top: 8px;
   }
 
   .weekday {
-    font-size: 13px;
+    font-size: 6px;
     color: var(--text);
     letter-spacing: 0.05em;
     font-weight: 600;
     text-transform: uppercase;
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
   }
 
   .month-badge {
-    font-size: 12px;
+    font-size: 6px;
     letter-spacing: 0.12em;
     color: #fff;
     background: var(--accent);
-    padding: 3px 10px;
+    padding: 2px 5px;
     border-radius: 999px;
     font-weight: 600;
     text-transform: uppercase;
     display: inline-block;
   }
 
-  /* Vertical divider */
   .vdivider {
     width: 1px;
     background: var(--border);
@@ -117,7 +115,6 @@
     flex-shrink: 0;
   }
 
-  /* Right side — calendar */
   .calendar {
     flex: 1;
   }
@@ -125,23 +122,23 @@
   .cal-header {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    margin-bottom: 6px;
+    margin-bottom: 3px;
   }
 
   .cal-header span {
-    font-size: 10px;
+    font-size: 5px;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.05em;
     color: var(--muted);
     text-align: center;
-    padding: 2px 0;
+    padding: 1px 0;
   }
 
   .cal-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 2px;
+    gap: 1px;
   }
 
   .cal-day {
@@ -149,11 +146,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
+    font-size: 6px;
     font-weight: 600;
     color: var(--text);
-    border-radius: 6px;
-    cursor: default;
+    border-radius: 3px;
   }
 
   .cal-day.empty {
@@ -164,10 +160,6 @@
     background: var(--accent);
     color: #fff;
     border-radius: 999px;
-  }
-
-  .cal-day.other {
-    color: var(--muted);
   }
 </style>
 </head>
@@ -201,32 +193,26 @@
     const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
     const today = pst.getDate();
-    const weekday = days[pst.getDay()];
-    const month = months[pst.getMonth()];
-    const year = pst.getFullYear();
     const monthIndex = pst.getMonth();
+    const year = pst.getFullYear();
 
-    // Day number with last digit accented
     const dayStr = String(today);
     document.getElementById('day-number').innerHTML = dayStr.length > 1
       ? dayStr.slice(0, -1) + `<span>${dayStr.slice(-1)}</span>`
       : `<span>${dayStr}</span>`;
 
-    document.getElementById('weekday').textContent = weekday;
-    document.getElementById('month-year').textContent = `${month} ${year}`;
+    document.getElementById('weekday').textContent = days[pst.getDay()];
+    document.getElementById('month-year').textContent = `${months[monthIndex]} ${year}`;
 
-    // Build calendar
-    const firstDay = new Date(year, monthIndex, 1).getDay(); // 0=Sun
+    const firstDay = new Date(year, monthIndex, 1).getDay();
     const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
 
     const grid = document.getElementById('cal-grid');
     grid.innerHTML = '';
 
-    // Empty cells before first day
     for (let i = 0; i < firstDay; i++) {
       const el = document.createElement('div');
       el.className = 'cal-day empty';
-      el.textContent = '';
       grid.appendChild(el);
     }
 
