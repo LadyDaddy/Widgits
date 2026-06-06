@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PST Clock</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --accent: #ff2d9b;
+    --text: #f0f0f0;
+    --muted: #555;
+    --border: #2a2a2a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 24px;
+  }
+
+  .clock-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px 36px 24px;
+    width: 100%;
+    max-width: 360px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .clock-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--accent);
+    border-radius: 20px 20px 0 0;
+  }
+
+  .label {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+
+  .time-display {
+    font-family: 'Inter', sans-serif;
+    font-size: 72px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    line-height: 1;
+    display: flex;
+    align-items: baseline;
+    gap: 0;
+  }
+
+  .colon {
+    color: var(--accent);
+    animation: blink 1s step-start infinite;
+    margin: 0 2px;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.15; }
+  }
+
+  .ampm {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    margin-left: 8px;
+    margin-bottom: 6px;
+    align-self: flex-end;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 16px 0 14px;
+  }
+
+  .meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .date-text {
+    font-size: 13px;
+    color: var(--text);
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .tz-badge {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: #fff;
+    background: var(--accent);
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+
+</style>
+</head>
+<body>
+<div class="clock-card">
+  <div class="label">Pacific Standard Time</div>
+  <div class="time-display">
+    <span id="hours">--</span>
+    <span class="colon">:</span>
+    <span id="minutes">--</span>
+    <span class="ampm" id="ampm">--</span>
+  </div>
+  <hr class="divider">
+  <div class="meta-row">
+    <span class="date-text" id="date">---</span>
+    <span class="tz-badge" id="tz-label">PST</span>
+  </div>
+
+</div>
+
+<script>
+  function updateClock() {
+    const now = new Date();
+    const pst = new Date(now.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }));
+
+    let h = pst.getHours();
+    const m = pst.getMinutes();
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    h = h % 12 || 12;
+
+    document.getElementById('hours').textContent = String(h).padStart(2, '0');
+    document.getElementById('minutes').textContent = String(m).padStart(2, '0');
+    document.getElementById('ampm').textContent = ampm;
+
+    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const dateStr = `${days[pst.getDay()]}, ${months[pst.getMonth()]} ${pst.getDate()}, ${pst.getFullYear()}`;
+    document.getElementById('date').textContent = dateStr;
+
+    // PDT vs PST label
+    const jan = new Date(pst.getFullYear(), 0, 1);
+    const jul = new Date(pst.getFullYear(), 6, 1);
+    const stdOff = Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+    const isDST = pst.getTimezoneOffset() < stdOff;
+    // Use Intl to detect DST offset for America/Los_Angeles
+    const offsetStr = now.toLocaleString('en-US', {timeZone:'America/Los_Angeles', timeZoneName:'short'}).split(' ').pop();
+    document.getElementById('tz-label').textContent = offsetStr;
+
+
+  }
+
+  updateClock();
+  setInterval(updateClock, 1000);
+</script>
+</body>
+</html>
