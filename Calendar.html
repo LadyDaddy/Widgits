@@ -7,33 +7,31 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0f0f0f;
-    --surface: #1a1a1a;
     --accent: #ff2d9b;
     --text: #f0f0f0;
-    --muted: #555;
+    --muted: #888;
     --border: #2a2a2a;
+    --surface: #1a1a1a;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  body {
-    background: var(--bg);
+  html, body {
+    background: transparent;
     font-family: 'Inter', sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    padding: 12px;
+    padding: 16px;
   }
 
   .date-card {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px 15px 12px;
-    width: 100%;
-    max-width: 280px;
+    border-radius: 16px;
+    padding: 18px 20px 16px;
+    width: 280px;
     position: relative;
     overflow: hidden;
   }
@@ -44,22 +42,22 @@
     top: 0; left: 0; right: 0;
     height: 2px;
     background: var(--accent);
-    border-radius: 12px 12px 0 0;
+    border-radius: 16px 16px 0 0;
   }
 
   .label {
-    font-size: 6px;
-    letter-spacing: 0.22em;
+    font-size: 9px;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--text);
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     font-weight: 600;
   }
 
   .content-row {
     display: flex;
     gap: 14px;
-    align-items: flex-start;
+    align-items: stretch;
   }
 
   .left {
@@ -67,11 +65,11 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-width: 70px;
+    width: 80px;
   }
 
   .day-number {
-    font-size: 40px;
+    font-size: 42px;
     font-weight: 700;
     letter-spacing: -0.02em;
     color: var(--text);
@@ -87,21 +85,21 @@
   }
 
   .weekday {
-    font-size: 6px;
+    font-size: 9px;
     color: var(--text);
     letter-spacing: 0.05em;
     font-weight: 600;
     text-transform: uppercase;
     display: block;
-    margin-bottom: 4px;
+    margin-bottom: 5px;
   }
 
   .month-badge {
-    font-size: 6px;
-    letter-spacing: 0.12em;
+    font-size: 9px;
+    letter-spacing: 0.1em;
     color: #fff;
     background: var(--accent);
-    padding: 2px 5px;
+    padding: 2px 8px;
     border-radius: 999px;
     font-weight: 600;
     text-transform: uppercase;
@@ -117,22 +115,22 @@
 
   .calendar {
     flex: 1;
+    min-width: 0;
   }
 
   .cal-header {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    margin-bottom: 3px;
+    margin-bottom: 4px;
   }
 
   .cal-header span {
-    font-size: 5px;
+    font-size: 9px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--muted);
     text-align: center;
-    padding: 1px 0;
   }
 
   .cal-grid {
@@ -146,7 +144,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 6px;
+    font-size: 11px;
     font-weight: 600;
     color: var(--text);
     border-radius: 3px;
