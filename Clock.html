@@ -7,33 +7,31 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0f0f0f;
-    --surface: #1a1a1a;
     --accent: #ff2d9b;
     --text: #f0f0f0;
-    --muted: #555;
+    --muted: #888;
     --border: #2a2a2a;
+    --surface: #1a1a1a;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  body {
-    background: var(--bg);
+  html, body {
+    background: transparent;
     font-family: 'Inter', sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    padding: 12px;
+    padding: 16px;
   }
 
   .clock-card {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px 18px 12px;
-    width: 100%;
-    max-width: 180px;
+    border-radius: 16px;
+    padding: 18px 22px 16px;
+    width: 280px;
     position: relative;
     overflow: hidden;
   }
@@ -44,28 +42,26 @@
     top: 0; left: 0; right: 0;
     height: 2px;
     background: var(--accent);
-    border-radius: 12px 12px 0 0;
+    border-radius: 16px 16px 0 0;
   }
 
   .label {
-    font-size: 6px;
-    letter-spacing: 0.22em;
+    font-size: 9px;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--text);
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     font-weight: 600;
   }
 
   .time-display {
-    font-family: 'Inter', sans-serif;
-    font-size: 36px;
+    font-size: 42px;
     font-weight: 700;
     letter-spacing: -0.02em;
     color: var(--text);
     line-height: 1;
     display: flex;
     align-items: baseline;
-    gap: 0;
   }
 
   .colon {
@@ -80,21 +76,20 @@
   }
 
   .ampm {
-    font-family: 'Inter', sans-serif;
-    font-size: 8px;
+    font-size: 11px;
     font-weight: 600;
     text-transform: uppercase;
     color: var(--accent);
     letter-spacing: 0.08em;
-    margin-left: 4px;
-    margin-bottom: 3px;
+    margin-left: 6px;
+    margin-bottom: 4px;
     align-self: flex-end;
   }
 
   .divider {
     border: none;
     border-top: 1px solid var(--border);
-    margin: 8px 0 7px;
+    margin: 10px 0 9px;
   }
 
   .meta-row {
@@ -104,7 +99,7 @@
   }
 
   .date-text {
-    font-size: 6px;
+    font-size: 9px;
     color: var(--text);
     letter-spacing: 0.05em;
     font-weight: 600;
@@ -112,11 +107,11 @@
   }
 
   .tz-badge {
-    font-size: 6px;
-    letter-spacing: 0.12em;
+    font-size: 9px;
+    letter-spacing: 0.1em;
     color: #fff;
     background: var(--accent);
-    padding: 2px 5px;
+    padding: 2px 8px;
     border-radius: 999px;
     font-weight: 600;
     text-transform: uppercase;
@@ -125,7 +120,7 @@
 </head>
 <body>
 <div class="clock-card">
-  <div class="label">Pacific Standard Time</div>
+  <div class="label">Pacific Time</div>
   <div class="time-display">
     <span id="hours">--</span>
     <span class="colon">:</span>
