@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Date Widget</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --accent: #ff2d9b;
+    --text: #f0f0f0;
+    --muted: #555;
+    --border: #2a2a2a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 24px;
+  }
+
+  .date-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px 30px 24px;
+    width: 100%;
+    max-width: 560px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .date-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--accent);
+    border-radius: 20px 20px 0 0;
+  }
+
+  .label {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  .content-row {
+    display: flex;
+    gap: 28px;
+    align-items: flex-start;
+  }
+
+  /* Left side */
+  .left {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 140px;
+  }
+
+  .day-number {
+    font-size: 80px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .day-number span {
+    color: var(--accent);
+  }
+
+  .left-meta {
+    margin-top: 16px;
+  }
+
+  .weekday {
+    font-size: 13px;
+    color: var(--text);
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .month-badge {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: #fff;
+    background: var(--accent);
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-weight: 600;
+    text-transform: uppercase;
+    display: inline-block;
+  }
+
+  /* Vertical divider */
+  .vdivider {
+    width: 1px;
+    background: var(--border);
+    align-self: stretch;
+    flex-shrink: 0;
+  }
+
+  /* Right side — calendar */
+  .calendar {
+    flex: 1;
+  }
+
+  .cal-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin-bottom: 6px;
+  }
+
+  .cal-header span {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-align: center;
+    padding: 2px 0;
+  }
+
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+  }
+
+  .cal-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    border-radius: 6px;
+    cursor: default;
+  }
+
+  .cal-day.empty {
+    visibility: hidden;
+  }
+
+  .cal-day.today {
+    background: var(--accent);
+    color: #fff;
+    border-radius: 999px;
+  }
+
+  .cal-day.other {
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+<div class="date-card">
+  <div class="label">Today's Date</div>
+  <div class="content-row">
+    <div class="left">
+      <div class="day-number" id="day-number">--</div>
+      <div class="left-meta">
+        <span class="weekday" id="weekday">---</span>
+        <span class="month-badge" id="month-year">--- ----</span>
+      </div>
+    </div>
+    <div class="vdivider"></div>
+    <div class="calendar">
+      <div class="cal-header">
+        <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+      </div>
+      <div class="cal-grid" id="cal-grid"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function updateDate() {
+    const now = new Date();
+    const pst = new Date(now.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }));
+
+    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+    const today = pst.getDate();
+    const weekday = days[pst.getDay()];
+    const month = months[pst.getMonth()];
+    const year = pst.getFullYear();
+    const monthIndex = pst.getMonth();
+
+    // Day number with last digit accented
+    const dayStr = String(today);
+    document.getElementById('day-number').innerHTML = dayStr.length > 1
+      ? dayStr.slice(0, -1) + `<span>${dayStr.slice(-1)}</span>`
+      : `<span>${dayStr}</span>`;
+
+    document.getElementById('weekday').textContent = weekday;
+    document.getElementById('month-year').textContent = `${month} ${year}`;
+
+    // Build calendar
+    const firstDay = new Date(year, monthIndex, 1).getDay(); // 0=Sun
+    const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+
+    const grid = document.getElementById('cal-grid');
+    grid.innerHTML = '';
+
+    // Empty cells before first day
+    for (let i = 0; i < firstDay; i++) {
+      const el = document.createElement('div');
+      el.className = 'cal-day empty';
+      el.textContent = '';
+      grid.appendChild(el);
+    }
+
+    for (let d = 1; d <= daysInMonth; d++) {
+      const el = document.createElement('div');
+      el.className = 'cal-day' + (d === today ? ' today' : '');
+      el.textContent = d;
+      grid.appendChild(el);
+    }
+  }
+
+  updateDate();
+  setInterval(updateDate, 60000);
+</script>
+</body>
+</html>
