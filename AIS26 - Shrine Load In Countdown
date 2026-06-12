@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shrine Load In Countdown</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent: #ff2d9b;
+    --text: #f0f0f0;
+    --muted: #888;
+    --border: #2a2a2a;
+    --surface: #1a1a1a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    background: var(--surface);
+    font-family: 'Inter', sans-serif;
+  }
+
+  .card {
+    position: fixed;
+    inset: 0;
+    background: var(--surface);
+    padding: 18px 22px 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--accent);
+  }
+
+  .label {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+
+  .sublabel {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+    font-weight: 600;
+  }
+
+  .countdown-row {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+  }
+
+  .unit-number {
+    font-size: 38px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .unit-number.accent { color: var(--accent); }
+
+  .unit-label {
+    font-size: 7px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .sep {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--border);
+    line-height: 1;
+    padding-top: 2px;
+    flex: 0;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 14px 0 10px;
+  }
+
+  .meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .target-date {
+    font-size: 9px;
+    color: var(--text);
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .event-badge {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: #fff;
+    background: var(--accent);
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="label">Countdown to Load In</div>
+  <div class="sublabel">The Shrine · Sep 9, 2026</div>
+  <div class="countdown-row">
+    <div class="unit">
+      <div class="unit-number accent" id="days">--</div>
+      <div class="unit-label">Days</div>
+    </div>
+    <div class="sep">:</div>
+    <div class="unit">
+      <div class="unit-number" id="hours">--</div>
+      <div class="unit-label">Hours</div>
+    </div>
+    <div class="sep">:</div>
+    <div class="unit">
+      <div class="unit-number" id="minutes">--</div>
+      <div class="unit-label">Mins</div>
+    </div>
+  </div>
+  <hr class="divider">
+  <div class="meta-row">
+    <span class="target-date" id="target-label">Wednesday, Sep 9, 2026</span>
+    <span class="event-badge">Load In</span>
+  </div>
+</div>
+
+<script>
+  const target = new Date('2026-09-09T09:00:00-07:00'); // 9am PDT
+
+  function update() {
+    const now = new Date();
+    const diff = target - now;
+
+    if (diff <= 0) {
+      document.getElementById('days').textContent = '00';
+      document.getElementById('hours').textContent = '00';
+      document.getElementById('minutes').textContent = '00';
+      document.querySelector('.label').textContent = "It's Load In Day!";
+      return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+    document.getElementById('days').textContent = String(days).padStart(2, '0');
+    document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+    document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+  }
+
+  update();
+  setInterval(update, 1000);
+</script>
+</body>
+</html>
